@@ -1,0 +1,26 @@
+@media only screen and (width <720px) {
+    html {
+        /* 8px */
+        font-size: 50%;
+    }
+}
+
+@media only screen and (width >=720px) {
+    html {
+        /* 10 px */
+        font-size: 62.5%;
+    }
+}
+
+@media only screen and (width >=1240px) {
+    html {
+        /* font-size: 24px; */
+    }
+}
+
+
+.text--element {
+    font-family: Rubik, Roboto;
+    font-weight: 400;
+    font-size: 2.8rem;
+}

@@ -1,0 +1,27 @@
+:root {
+    --color--background: #FFFFFF;
+
+    --color--control-minor: #E8E9EB;
+    --color--control-minor-hover: #DCDDE0;
+    --color--control-accent: #5AB030;
+    --color--control-accent-hover: #488C26;
+
+    --color--text-primary: #333333;
+    --color--text-secondary: #666666;
+}
+
+:root[theme="dark"] {
+    --color--background: #000000;
+
+    --color--control-minor: #171614;
+    --color--control-minor-hover: #23221F;
+    --color--control-accent: #5AB030;
+    --color--control-accent-hover: #488C26;
+
+    --color--text-primary: #CCCCCC;
+    --color--text-secondary: #999999;
+}
+
+body {
+    transition: background-color 1s;
+}
