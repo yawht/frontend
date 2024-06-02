@@ -1,16 +1,16 @@
-import { useState } from 'react'
 import './App.css'
 import './css'
+import { useTheme } from './components/Theme'
 
 function App() {
-    const [count, setCount] = useState(0)
+    const [theme, toggleTheme] = useTheme();
 
     return (
         <>
             <h1>Vite + React</h1>
             <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
+                <button onClick={toggleTheme}>
+                    theme is {theme}
                 </button>
                 <p>
                     Edit <code>src/App.tsx</code> and save to test HMR

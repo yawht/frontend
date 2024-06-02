@@ -10,7 +10,7 @@
     --color--text-secondary: #666666;
 }
 
-:root[theme="dark"] {
+:root[theme=dark] {
     --color--background: #000000;
 
     --color--control-minor: #171614;
@@ -23,5 +23,6 @@
 }
 
 body {
+    background-color: var(--color--background);
     transition: background-color 1s;
 }

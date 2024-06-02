@@ -19,8 +19,6 @@
 }
 
 
-.text--element {
-    font-family: Rubik, Roboto;
-    font-weight: 400;
-    font-size: 2.8rem;
+body {
+    color: var(--color--text-primary);
 }
