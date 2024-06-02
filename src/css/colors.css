@@ -8,6 +8,7 @@
 
     --color--text-primary: #333333;
     --color--text-secondary: #666666;
+    --color--text-control-accent: #FFFFFF;
 }
 
 :root[theme=dark] {
@@ -20,9 +21,10 @@
 
     --color--text-primary: #CCCCCC;
     --color--text-secondary: #999999;
+    --color--text-control-accent: #FFFFFF;
 }
 
 body {
     background-color: var(--color--background);
-    transition: background-color 1s;
+    transition: background-color 0.5s;
 }
