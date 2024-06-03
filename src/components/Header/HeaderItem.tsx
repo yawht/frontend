@@ -2,9 +2,14 @@ import React from "react";
 
 import * as styles from './HeaderItem.css'
 
-export const HeaderItem: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface HeaderItemProps {
+    onClick?: VoidFunction;
+    children: React.ReactNode;
+}
+
+export const HeaderItem: React.FC<HeaderItemProps> = ({ children, onClick }) => {
     return (
-        <div className={styles.root}>
+        <div className={styles.root} onClick={onClick}>
             {children}
         </div>
     );

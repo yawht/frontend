@@ -2,6 +2,7 @@ import React from "react";
 
 import * as styles from './Header.css'
 import { HeaderItem } from "./HeaderItem";
+import { ThemeSwitchButton } from "./ThemeSwitchButton";
 
 export const Header: React.FC = () => {
     return (
@@ -14,7 +15,7 @@ export const Header: React.FC = () => {
                 <HeaderItem >+</HeaderItem>
             </div>
             <div className={styles.section}>
-                <HeaderItem>тема</HeaderItem>
+                <ThemeSwitchButton />
             </div>
         </div >
     );
