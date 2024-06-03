@@ -1,1 +1,1 @@
-export const side = '8.0rem';
+export const side = '6.0rem';
