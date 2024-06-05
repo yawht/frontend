@@ -13,4 +13,4 @@ export const header = style({
 
 export const section = style({
     display: 'flex',
-}) 
+});
