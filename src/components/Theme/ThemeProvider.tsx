@@ -52,20 +52,35 @@ const darkTheme = createTheme({
     palette: darkThemePalette,
 });
 
+const THEME_LS_KEY = 'theme';
+
 const themeReducer = (theme: Theme) => theme === 'light' ? 'dark' : 'light';
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [theme, toggleTheme] = React.useReducer(themeReducer, 'light');
+    const mountedRef = React.useRef<boolean>(false);
+    const [theme, toggleTheme] = React.useReducer(
+        themeReducer,
+        'light',
+        (light) => localStorage.getItem(THEME_LS_KEY) as Theme || light
+    );
     const context = React.useMemo(() => [theme, toggleTheme] as const, [theme]);
 
-    React.useEffect(() => {
-        const root = document.querySelector(":root");
+    React.useLayoutEffect(() => {
+        localStorage.setItem(THEME_LS_KEY, theme);
+
+        const root = document.querySelector(":root") as HTMLHtmlElement;
+
         if (theme === 'dark' && root) {
             root.setAttribute('theme', theme);
 
             return () => {
                 root.removeAttribute('theme');
             }
+        }
+
+        if (!mountedRef.current) {
+            mountedRef.current = true;
+            root.style.transition = "background-color 0.5s";
         }
     }, [theme]);
 
