@@ -1,12 +1,18 @@
 import React from "react";
 import { CloudUpload } from "@mui/icons-material";
 import { useDropzone } from 'react-dropzone';
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import './style.css';
 
 export const ImageUpload: React.FC = () => {
-    const { acceptedFiles, getRootProps, getInputProps, isFocused } = useDropzone();
+    const {
+        acceptedFiles,
+        getRootProps,
+        getInputProps,
+        isDragActive,
+        isFileDialogActive
+    } = useDropzone();
 
     const files = acceptedFiles.map(file => (
         <li key={file.webkitRelativePath}>
@@ -17,11 +23,12 @@ export const ImageUpload: React.FC = () => {
     return (
         <Box component="section" className="container">
             <div {...getRootProps({
-                className: isFocused
+                className: isDragActive || isFileDialogActive
                     ? 'image-upload__dropzone image-upload__dropzone--active'
                     : 'image-upload__dropzone'
             })} >
                 <input {...getInputProps()} />
+                <Box sx={{ flex: 1 }} />
                 <Button
                     component="label"
                     role={undefined}
@@ -29,8 +36,13 @@ export const ImageUpload: React.FC = () => {
                     tabIndex={-1}
                     startIcon={<CloudUpload />}
                 >
-                    Upload file
+                    Загрузите файл
                 </Button>
+                <Box sx={{ flex: 1, display: 'flex' }}>
+                    <Typography variant="caption" mt="0.8rem">
+                        Или перетащите его в поле
+                    </Typography>
+                </Box>
             </div>
             <aside>
                 <h4>Files</h4>

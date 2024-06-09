@@ -3,7 +3,7 @@
     height: 51.2rem;
 
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     padding: 2.0rem;
     border-width: 0.2rem;
