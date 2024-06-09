@@ -4,6 +4,12 @@ import { useDropzone } from 'react-dropzone';
 import { Box, Button, Typography } from "@mui/material";
 
 import './style.css';
+import { ImagePreview } from "./ImagePreview";
+
+const accept = {
+    'image/png': ['.png'],
+    'image/jpeg': ['.jpeg', '.jpg'],
+};
 
 export const ImageUpload: React.FC = () => {
     const {
@@ -11,43 +17,53 @@ export const ImageUpload: React.FC = () => {
         getRootProps,
         getInputProps,
         isDragActive,
-        isFileDialogActive
-    } = useDropzone();
+        isFileDialogActive,
+        isDragReject,
+    } = useDropzone({
+        accept,
+        maxFiles: 1
+    });
 
-    const files = acceptedFiles.map(file => (
-        <li key={file.webkitRelativePath}>
-            {file.name} - {file.size} bytes
-        </li>
-    ));
+    const file = acceptedFiles[0];
+
+    const classNames = ['image-upload__dropzone'];
+    if (isDragReject) {
+        classNames.push('image-upload__dropzone--reject');
+    } else if (isDragActive || isFileDialogActive) {
+        classNames.push('image-upload__dropzone--active');
+    } 
 
     return (
         <Box component="section" className="container">
-            <div {...getRootProps({
-                className: isDragActive || isFileDialogActive
-                    ? 'image-upload__dropzone image-upload__dropzone--active'
-                    : 'image-upload__dropzone'
-            })} >
+            <div {...getRootProps({ className: classNames.join(" ") })} >
                 <input {...getInputProps()} />
-                <Box sx={{ flex: 1 }} />
-                <Button
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                    startIcon={<CloudUpload />}
-                >
-                    Загрузите файл
-                </Button>
-                <Box sx={{ flex: 1, display: 'flex' }}>
-                    <Typography variant="caption" mt="0.8rem">
-                        Или перетащите его в поле
-                    </Typography>
-                </Box>
+                {file && <ImagePreview image={file} />}
+                {!file && <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    height: '100%',
+                }}>
+                    <Box sx={{ flex: 1 }} />
+                    <Button
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUpload />}
+                    >
+                        Загрузите файл
+                    </Button>
+                    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <Typography variant="caption" mt="0.8rem">
+                            Или перетащите его в поле
+                        </Typography>
+                        {isDragReject && <Typography variant="caption">
+                            Доступные форматы: {Object.values(accept).flatMap(id => id)}
+                        </Typography>}
+                    </Box>
+                </Box>}
             </div>
-            <aside>
-                <h4>Files</h4>
-                <ul>{files}</ul>
-            </aside>
         </Box>
     );
 };

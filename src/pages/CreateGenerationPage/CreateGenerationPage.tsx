@@ -9,8 +9,8 @@ export const CreateGenerationPage: React.FC = () => {
         <Page>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <ImageUpload />
-                <Button variant="contained">Сгенерировать!</Button>
+                <Button variant="contained" sx={{ marginTop: '0.8rem' }}>Сгенерировать!</Button>
             </Box>
         </Page>
     );
-}
+};
