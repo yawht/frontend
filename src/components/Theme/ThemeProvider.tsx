@@ -1,5 +1,9 @@
 import React from "react";
-import { ThemeProvider as MuiThemeProvider, PaletteOptions, createTheme } from "@mui/material";
+import {
+    ThemeProvider as MuiThemeProvider,
+    PaletteOptions,
+    createTheme
+} from "@mui/material";
 
 export type Theme = 'dark' | 'light';
 
@@ -9,11 +13,17 @@ export const ThemeContext = React.createContext<Context | null>(null);
 const lightThemePalette: PaletteOptions = {
     mode: 'light',
     background: {
-        default: '#FFFFFF',
+        default: '#FFFFFF', // --color--background
+    },
+    primary: {
+        main: '#5AB030', // --color--control-accent
+        light: '#E8E9EB', // --color--control-minor
+        dark: '#488C26', // --color--control-accent-hover
+        contrastText: '#FFFFFF', // --color--text-control-accent
     },
     text: {
-        primary: '#333333',
-        secondary: '#666666',
+        primary: '#333333', // --color--text-primary
+        secondary: '#666666', // --color--text-secondary
     }
 };
 
@@ -25,6 +35,12 @@ const darkThemePalette: PaletteOptions = {
     mode: 'dark',
     background: {
         default: '#000000',
+    },
+    primary: {
+        main: '#5AB030',
+        light: '#171614',
+        dark: '#488C26',
+        contrastText: '#FFFFFF',
     },
     text: {
         primary: '#CCCCCC',
@@ -59,6 +75,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 {children}
             </ThemeContext.Provider>
         </MuiThemeProvider>
-    )
+    );
 };
 

@@ -17,6 +17,9 @@ importers:
       '@fontsource/open-sans':
         specifier: ^5.0.28
         version: 5.0.28
+      '@mui/icons-material':
+        specifier: ^5.15.19
+        version: 5.15.19(@mui/material@5.15.19(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
       '@mui/material':
         specifier: ^5.15.19
         version: 5.15.19(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -29,6 +32,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      react-dropzone:
+        specifier: ^14.2.3
+        version: 14.2.3(react@18.3.1)
       react-router-dom:
         specifier: ^6.23.1
         version: 6.23.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -598,6 +604,17 @@ packages:
   '@mui/core-downloads-tracker@5.15.19':
     resolution: {integrity: sha512-tCHSi/Tomez9ERynFhZRvFO6n9ATyrPs+2N80DMDzp6xDVirbBjEwhPcE+x7Lj+nwYw0SqFkOxyvMP0irnm55w==}
 
+  '@mui/icons-material@5.15.19':
+    resolution: {integrity: sha512-RsEiRxA5azN9b8gI7JRqekkgvxQUlitoBOtZglflb8cUDyP12/cP4gRwhb44Ea1/zwwGGjAj66ZJpGHhKfibNA==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@mui/material': ^5.0.0
+      '@types/react': ^17.0.0 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
   '@mui/material@5.15.19':
     resolution: {integrity: sha512-lp5xQBbcRuxNtjpWU0BWZgIrv2XLUz4RJ0RqFXBdESIsKoGCQZ6P3wwU5ZPuj5TjssNiKv9AlM+vHopRxZhvVQ==}
     engines: {node: '>=12.0.0'}
@@ -938,6 +955,10 @@ packages:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
 
+  attr-accept@2.2.2:
+    resolution: {integrity: sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==}
+    engines: {node: '>=4'}
+
   babel-plugin-macros@3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
@@ -1169,6 +1190,10 @@ packages:
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
+
+  file-selector@0.6.0:
+    resolution: {integrity: sha512-QlZ5yJC0VxHxQQsQhXvBaC7VRJ2uaxTf+Tfpu4Z/OcVQJVpZO+DGU0rkoVW5ce2SccxugvpBJoMvUs59iILYdw==}
+    engines: {node: '>= 12'}
 
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
@@ -1465,6 +1490,12 @@ packages:
     peerDependencies:
       react: ^18.3.1
 
+  react-dropzone@14.2.3:
+    resolution: {integrity: sha512-O3om8I+PkFKbxCukfIR3QAGftYXDZfOE2N1mr/7qebQJHs7U+/RSL/9xomJNpRg9kM5h9soQSdf0Gc7OHF5Fug==}
+    engines: {node: '>= 10.13'}
+    peerDependencies:
+      react: '>= 16.8 || 18.0.0'
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -1600,6 +1631,9 @@ packages:
     engines: {node: '>=16'}
     peerDependencies:
       typescript: '>=4.2.0'
+
+  tslib@2.6.3:
+    resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -2138,6 +2172,14 @@ snapshots:
 
   '@mui/core-downloads-tracker@5.15.19': {}
 
+  '@mui/icons-material@5.15.19(@mui/material@5.15.19(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)':
+    dependencies:
+      '@babel/runtime': 7.24.6
+      '@mui/material': 5.15.19(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+    optionalDependencies:
+      '@types/react': 18.3.3
+
   '@mui/material@5.15.19(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.24.6
@@ -2527,6 +2569,8 @@ snapshots:
 
   array-union@2.1.0: {}
 
+  attr-accept@2.2.2: {}
+
   babel-plugin-macros@3.1.0:
     dependencies:
       '@babel/runtime': 7.24.6
@@ -2816,6 +2860,10 @@ snapshots:
     dependencies:
       flat-cache: 3.2.0
 
+  file-selector@0.6.0:
+    dependencies:
+      tslib: 2.6.3
+
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -3085,6 +3133,13 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
+  react-dropzone@14.2.3(react@18.3.1):
+    dependencies:
+      attr-accept: 2.2.2
+      file-selector: 0.6.0
+      prop-types: 15.8.1
+      react: 18.3.1
+
   react-is@16.13.1: {}
 
   react-is@18.3.1: {}
@@ -3209,6 +3264,8 @@ snapshots:
   ts-api-utils@1.3.0(typescript@5.4.5):
     dependencies:
       typescript: 5.4.5
+
+  tslib@2.6.3: {}
 
   type-check@0.4.0:
     dependencies:

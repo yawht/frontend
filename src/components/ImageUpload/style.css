@@ -1,0 +1,19 @@
+.image-upload__dropzone {
+    width: 25.6rem;
+    height: 25.6rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.0rem;
+    border-width: 0.2rem;
+    border-radius: 0.2rem;
+    border-color: var(--color--control-minor);
+    border-style: dashed;
+    outline: none;
+    transition: border 0.24s ease-in-out;
+}
+
+.image-upload__dropzone--active {
+    border-color: var(--color--control-accent-hover);
+}
