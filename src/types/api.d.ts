@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace API {
     type Status = 'created' | 'in_progress' | 'finished' | 'failed';
 
@@ -22,5 +21,9 @@ declare namespace API {
         input_prompt?: string;
 
         results: GenerationResult[];
+    }
+
+    interface GenerationStartResult {
+        uid: string;
     }
 }
