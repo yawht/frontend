@@ -7,7 +7,7 @@ export const ThemeSwitchButton: React.FC = () => {
 
     return (
         <HeaderItem onClick={switchTheme}>
-            тема: {theme}
+            {theme}
         </HeaderItem>
     );
 };
