@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MutableRefObject } from "react";
 import { CloudUpload } from "@mui/icons-material";
 import { useDropzone } from 'react-dropzone';
 import { Box, Button, Typography } from "@mui/material";
@@ -11,7 +11,11 @@ const accept = {
     'image/jpeg': ['.jpeg', '.jpg'],
 };
 
-export const ImageUpload: React.FC = () => {
+interface ImageUploadProps {
+    imageRef?: MutableRefObject<File | undefined>;
+}
+
+export const ImageUpload: React.FC<ImageUploadProps> = ({ imageRef }) => {
     const {
         acceptedFiles,
         getRootProps,
@@ -25,6 +29,12 @@ export const ImageUpload: React.FC = () => {
     });
 
     const file = acceptedFiles[0];
+
+    React.useEffect(() => {
+        if (imageRef) {
+            imageRef.current = file;
+        }
+    }, [file, imageRef])
 
     const classNames = ['image-upload__dropzone'];
     if (isDragReject) {

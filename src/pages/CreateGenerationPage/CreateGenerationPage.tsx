@@ -1,11 +1,12 @@
-import React from "react";
+import React, { ChangeEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Box, Button, CircularProgress, FormControl, TextField } from "@mui/material";
 
 import { Page } from "../../components/Page/Page";
 import { ImageUpload } from "../../components/ImageUpload/ImageUpload";
-import { delay } from "../../lib/promise";
+import { ApiError, api } from "../../api";
+import { toBase64 } from "../../lib/file";
 
 interface StartButtonProps {
     pending?: boolean;
@@ -25,33 +26,52 @@ export const StartButton: React.FC<StartButtonProps> = ({ pending, onClick }) =>
 };
 
 export const CreateGenerationPage: React.FC = () => {
-    const { mutateAsync, isPending } = useMutation<API.GenerationStartResult>({
+    const imageRef = React.useRef<File>();
+    const [prompt, setPrompt] = React.useState('');
+
+    const { mutateAsync, isPending } = useMutation<
+        API.Generation,
+        ApiError,
+        POST.LaunchGeneration
+    >({
         mutationKey: ['generate'],
-        mutationFn: () => {
-            return delay(5000).then(() => ({
-                uid: "some-uuid"
-            }));
+        mutationFn: (body) => {
+            return api.fetch<API.Generation, POST.LaunchGeneration>('/generations', {
+                method: "POST",
+                body,
+            })
         }
     });
 
     const navigate = useNavigate();
 
+    const onPromptChange = React.useCallback<ChangeEventHandler<HTMLInputElement>>(event => setPrompt(event.target.value), [])
+
     const startGeneration = React.useCallback(() => {
-        return mutateAsync()
+        const image = imageRef.current;
+        if (!image) {
+            return;
+        }
+
+        return toBase64(image).then(base64 => mutateAsync({
+            input_image: base64,
+            input_prompt: prompt,
+        }))
             .then(({ uid }) => navigate(`/generation/${uid}`))
             .catch(console.error);
-    }, [mutateAsync, navigate]);
+    }, [mutateAsync, navigate, prompt]);
 
     return (
         <Page>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} padding="1.6rem">
-                <ImageUpload />
+                <ImageUpload imageRef={imageRef} />
                 <FormControl sx={{ marginTop: '1.6rem', width: '51.2rem' }} disabled={isPending}>
                     <TextField
                         multiline
                         variant="outlined"
                         id="prompt"
                         label="Input prompt"
+                        onChange={onPromptChange}
                     />
                 </FormControl>
                 <StartButton pending={isPending} onClick={startGeneration} />

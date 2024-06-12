@@ -9,7 +9,7 @@ const routes: RouteObject[] = [
         element: <LandingPage />,
     },
     {
-        path: '/generation/create',
+        path: '/generation',
         element: <CreateGenerationPage />,
     },
     {

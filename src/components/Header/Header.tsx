@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
                     {null}
                 </HeaderItem>
                 <HeaderItem link="/timeline">Запуски</HeaderItem>
-                <HeaderItem link="/generation/create">+</HeaderItem>
+                <HeaderItem link="/generation">+</HeaderItem>
             </div>
             <div className={styles.section}>
                 <ThemeSwitchButton />
