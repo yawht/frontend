@@ -4,9 +4,10 @@ import { useMutation } from "@tanstack/react-query";
 import { Box, Button, CircularProgress, FormControl, TextField } from "@mui/material";
 
 import { Page } from "../../components/Page/Page";
-import { ImageUpload } from "../../components/ImageUpload/ImageUpload";
+import { ImageUpload, ImageUploadPreview } from "../../components/ImageUpload/ImageUpload";
 import { ApiError, api } from "../../api";
 import { toBase64 } from "../../lib/file";
+import { useRenewedBoolean } from "../../lib/useRenewedBoolean";
 
 interface StartButtonProps {
     pending?: boolean;
@@ -26,8 +27,10 @@ export const StartButton: React.FC<StartButtonProps> = ({ pending, onClick }) =>
 };
 
 export const CreateGenerationPage: React.FC = () => {
-    const imageRef = React.useRef<File>();
+    const [image, setImage] = React.useState<File>();
     const [prompt, setPrompt] = React.useState('');
+
+    const [imageIncorrect, setImageIncorrect] = useRenewedBoolean(2000);
 
     const { mutateAsync, isPending } = useMutation<
         API.Generation,
@@ -48,8 +51,8 @@ export const CreateGenerationPage: React.FC = () => {
     const onPromptChange = React.useCallback<ChangeEventHandler<HTMLInputElement>>(event => setPrompt(event.target.value), [])
 
     const startGeneration = React.useCallback(() => {
-        const image = imageRef.current;
         if (!image) {
+            setImageIncorrect();
             return;
         }
 
@@ -59,12 +62,13 @@ export const CreateGenerationPage: React.FC = () => {
         }))
             .then(({ uid }) => navigate(`/generation/${uid}`))
             .catch(console.error);
-    }, [mutateAsync, navigate, prompt]);
+    }, [mutateAsync, navigate, prompt, image]);
 
     return (
         <Page>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} padding="1.6rem">
-                <ImageUpload imageRef={imageRef} />
+                <ImageUpload onImageChange={setImage} showError={imageIncorrect} />
+                {image && <ImageUploadPreview image={image} />}
                 <FormControl sx={{ marginTop: '1.6rem', width: '51.2rem' }} disabled={isPending}>
                     <TextField
                         multiline

@@ -1,21 +1,37 @@
-import React, { MutableRefObject } from "react";
-import { CloudUpload } from "@mui/icons-material";
+import React from "react";
 import { useDropzone } from 'react-dropzone';
+import { CloudUpload } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
 
-import './style.css';
 import { ImagePreview } from "./ImagePreview";
+
+import './style.css';
 
 const accept = {
     'image/png': ['.png'],
     'image/jpeg': ['.jpeg', '.jpg'],
 };
 
-interface ImageUploadProps {
-    imageRef?: MutableRefObject<File | undefined>;
+interface ControlledImageUploadProps {
+    image: File;
 }
 
-export const ImageUpload: React.FC<ImageUploadProps> = ({ imageRef }) => {
+interface UncontrolledImageUploadProps {
+    onImageChange: (image: File | undefined) => void;
+    showError?: boolean;
+}
+
+export const ImageUploadPreview: React.FC<ControlledImageUploadProps> = ({ image }) => {
+    return (
+        <Box component="section" className="container">
+            <div className="image-upload__dropzone" >
+                <ImagePreview image={image} />
+            </div>
+        </Box>
+    );
+};
+
+export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onImageChange, showError }) => {
     const {
         acceptedFiles,
         getRootProps,
@@ -25,19 +41,17 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ imageRef }) => {
         isDragReject,
     } = useDropzone({
         accept,
-        maxFiles: 1
+        maxFiles: 1,
     });
 
-    const file = acceptedFiles[0];
+    const file: File | undefined = acceptedFiles[0];
 
-    React.useEffect(() => {
-        if (imageRef) {
-            imageRef.current = file;
-        }
-    }, [file, imageRef])
+    React.useLayoutEffect(() => {
+        onImageChange(file);
+    }, [file, onImageChange]);
 
     const classNames = ['image-upload__dropzone'];
-    if (isDragReject) {
+    if (isDragReject || showError) {
         classNames.push('image-upload__dropzone--reject');
     } else if (isDragActive || isFileDialogActive) {
         classNames.push('image-upload__dropzone--active');
