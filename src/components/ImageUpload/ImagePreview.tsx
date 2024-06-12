@@ -3,7 +3,7 @@ import React from "react";
 
 interface ImagePreviewProps {
     spinner?: boolean;
-    src: string | undefined;
+    src?: string;
 }
 
 export const ImagePreview: React.FC<ImagePreviewProps> = ({ src, spinner }) => {
