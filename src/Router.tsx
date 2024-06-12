@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider, RouteObject } from 'react-router-dom';
 
-import { LandingPage, CreateGenerationPage, TimelinePage } from './pages';
+import { LandingPage, CreateGenerationPage, TimelinePage, NotFoundPage } from './pages';
 import { BaseGenerationPage, GenerationPage } from './pages/CreateGenerationPage/CreateGenerationPage';
 
 const routes: RouteObject[] = [
@@ -25,7 +25,12 @@ const routes: RouteObject[] = [
     {
         path: '/timeline',
         element: <TimelinePage />
+    },
+    {
+        path: "*",
+        element: <NotFoundPage />
     }
+
 ];
 
 const router = createBrowserRouter([
