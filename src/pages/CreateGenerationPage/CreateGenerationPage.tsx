@@ -129,9 +129,9 @@ export const GenerationPage: React.FC = () => {
     return <>
         <ImageUploadPreview src={previewSrc} />
         <FormControl sx={{ marginTop: '1.6rem', width: '51.2rem' }} disabled>
-            <OutlinedTextField label="Описание" value={description} disabled />
-            <OutlinedTextField label="Промпт" value={prompt} disabled />
-            <OutlinedTextField label="Отрицательный промпт" value={negativePrompt} disabled />
+            <OutlinedTextField label="Описание" value={description || data?.description || ''} disabled />
+            <OutlinedTextField label="Промпт" value={prompt || data?.input_prompt || ''} disabled />
+            <OutlinedTextField label="Отрицательный промпт" value={negativePrompt || data?.negative_prompt || ''} disabled />
         </FormControl>
         <ImageList variant="masonry" cols={1} rowHeight='auto' gap={4} sx={{ width: "51.2rem" }}>
             {results.map((result) => (
