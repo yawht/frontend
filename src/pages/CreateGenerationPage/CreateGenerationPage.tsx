@@ -129,6 +129,15 @@ export const GenerationPage: React.FC = () => {
         refetchInterval: (query) => !query.state.data || ['created', 'in_progress'].includes(query.state.data.status) ? 5000 : false,
     });
 
+    React.useEffect(() => {
+        if (src) {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth",
+            });
+        }
+    }, []);
+
     const results = !data || ['created', 'in_progress'].includes(data.status) ? mockImages : data.results;
     const previewSrc = src || data?.input_image_link;
 
