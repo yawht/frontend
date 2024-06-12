@@ -4,6 +4,7 @@ import { CloudUpload } from "@mui/icons-material";
 import { Box, Button, Skeleton, Typography } from "@mui/material";
 
 import { ImagePreview } from "./ImagePreview";
+import { toBase64 } from "../../lib/file";
 
 import './style.css';
 
@@ -13,26 +14,26 @@ const accept = {
 };
 
 interface ControlledImageUploadProps {
-    image: File | undefined;
+    src: string | undefined;
 }
 
 interface UncontrolledImageUploadProps {
-    onImageChange: (image: File | undefined) => void;
+    onSrcChange: (image: string | undefined) => void;
     showError?: boolean;
 }
 
-export const ImageUploadPreview: React.FC<ControlledImageUploadProps> = ({ image }) => {
+export const ImageUploadPreview: React.FC<ControlledImageUploadProps> = ({ src }) => {
     return (
         <Box component="section" className="container">
             <div className="image-upload__dropzone" >
-                {image && <ImagePreview image={image} />}
-                {!image && <Skeleton variant="rectangular" width="100%" height="100%" />}
+                {src && <ImagePreview src={src} />}
+                {!src && <Skeleton variant="rectangular" width="100%" height="100%" />}
             </div>
         </Box>
     );
 };
 
-export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onImageChange, showError }) => {
+export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onSrcChange, showError }) => {
     const {
         acceptedFiles,
         getRootProps,
@@ -45,11 +46,29 @@ export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onImageCha
         maxFiles: 1,
     });
 
+    const [src, setSrc] = React.useState<string>();
     const file: File | undefined = acceptedFiles[0];
+    React.useEffect(() => {
+        let effectActive = true;
+        if (!file) {
+            setSrc("");
+            onSrcChange("");
+        }
+        else {
+            toBase64(file).then((base64) => {
+                if (!effectActive) {
+                    return;
+                }
+                setSrc(base64);
+                onSrcChange(base64);
+            })
 
-    React.useLayoutEffect(() => {
-        onImageChange(file);
-    }, [file, onImageChange]);
+            return () => {
+                effectActive = false;
+            };
+        }
+
+    }, [file, onSrcChange]);
 
     const classNames = ['image-upload__dropzone'];
     if (isDragReject || showError) {
@@ -62,7 +81,7 @@ export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onImageCha
         <Box component="section" className="container">
             <div {...getRootProps({ className: classNames.join(" ") })} >
                 <input {...getInputProps()} />
-                {file && <ImagePreview image={file} />}
+                {file && <ImagePreview src={src} />}
                 {!file && <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',

@@ -1,21 +1,10 @@
 import React from "react";
 
 interface ImagePreviewProps {
-    image: File;
+    src: string | undefined;
 }
 
-export const ImagePreview: React.FC<ImagePreviewProps> = ({ image }) => {
-    const [src, setSrc] = React.useState<string | undefined>(undefined);
-
-    React.useEffect(() => {
-        const url = URL.createObjectURL(image);
-        setSrc(url);
-
-        return () => {
-            URL.revokeObjectURL(url);
-        };
-    }, [image]);
-
+export const ImagePreview: React.FC<ImagePreviewProps> = ({ src }) => {
     return (
         <img
             src={src}

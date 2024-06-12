@@ -6,7 +6,6 @@ import { Box, Button, CircularProgress, FormControl, ImageList, ImageListItem, S
 import { Page } from "../../components/Page/Page";
 import { ImageUpload, ImageUploadPreview } from "../../components/ImageUpload/ImageUpload";
 import { ApiError, api } from "../../api";
-import { toBase64 } from "../../lib/file";
 import { useRenewedBoolean } from "../../lib/useRenewedBoolean";
 
 interface StartButtonProps {
@@ -51,8 +50,8 @@ const OutlinedTextField: React.FC<OutlinedTextField> = ({ value, onChange: setVa
 
 export const CreateGenerationPage: React.FC = () => {
     const {
-        image,
-        setImage,
+        src,
+        setSrc,
         prompt,
         setPrompt,
         description,
@@ -79,24 +78,24 @@ export const CreateGenerationPage: React.FC = () => {
     const navigate = useNavigate();
 
     const startGeneration = React.useCallback(() => {
-        if (!image) {
+        if (!src) {
             setImageIncorrect();
             return;
         }
 
-        return toBase64(image).then(base64 => mutateAsync({
-            input_image: base64,
+        return mutateAsync({
+            input_image: src,
             description: description,
             input_prompt: prompt === '' ? null : prompt,
             negative_prompt: negativePrompt === '' ? null : negativePrompt,
 
-        }))
+        })
             .then(({ uid }) => navigate(`/generation/${uid}`))
             .catch(console.error);
-    }, [mutateAsync, navigate, prompt, image, setImageIncorrect, description, negativePrompt]);
+    }, [mutateAsync, navigate, prompt, setImageIncorrect, description, negativePrompt, src]);
 
     return <>
-        <ImageUpload onImageChange={setImage} showError={imageIncorrect} />
+        <ImageUpload onSrcChange={setSrc} showError={imageIncorrect} />
         <FormControl sx={{ marginTop: '1.6rem', width: '51.2rem' }} >
             <OutlinedTextField label="Описание" onChange={setDescription} disabled={isPending} />
             <OutlinedTextField label="Промпт" onChange={setPrompt} disabled={isPending} />
@@ -112,7 +111,7 @@ const mockImages: API.GenerationResult[] = new Array(1).fill(undefined).map((_, 
 
 export const GenerationPage: React.FC = () => {
     const {
-        image,
+        src,
         prompt,
         description,
         negativePrompt,
@@ -125,9 +124,10 @@ export const GenerationPage: React.FC = () => {
     });
 
     const results = isFetching || !data || data.results.length === 0 ? mockImages : data.results;
+    const previewSrc = src || data?.input_image_link;
 
     return <>
-        <ImageUploadPreview image={image} />
+        <ImageUploadPreview src={previewSrc} />
         <FormControl sx={{ marginTop: '1.6rem', width: '51.2rem' }} disabled>
             <OutlinedTextField label="Описание" value={description} disabled />
             <OutlinedTextField label="Промпт" value={prompt} disabled />
@@ -164,8 +164,8 @@ export const GenerationPage: React.FC = () => {
 }
 
 interface GenerationPageContext {
-    image: File | undefined;
-    setImage: (image: File | undefined) => void;
+    src: string | undefined;
+    setSrc: (src: string | undefined) => void;
     description: string;
     setDescription: (description: string) => void;
     prompt: string;
@@ -175,9 +175,7 @@ interface GenerationPageContext {
 }
 
 export const BaseGenerationPage = () => {
-    // const image = useInstance(() => document.createElement('img'));
-
-    const [image, setImage] = React.useState<File>()
+    const [src, setSrc] = React.useState<string>()
     const [description, setDescription] = React.useState('');
     const [prompt, setPrompt] = React.useState('');
     const [negativePrompt, setNegativePrompt] = React.useState('');
@@ -186,8 +184,8 @@ export const BaseGenerationPage = () => {
         <Page>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} padding="1.6rem">
                 <Outlet context={{
-                    image,
-                    setImage,
+                    src,
+                    setSrc,
                     prompt,
                     setPrompt,
                     description,
