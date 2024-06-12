@@ -14,14 +14,31 @@ interface AccordionItemProps {
 
 const IMAGE_SIDE = "20.0rem";
 
+const formatUnit = (unit: number) => unit < 10 ? `0${unit}` : `${unit}`;
+
 const AccordionItem: React.FC<AccordionItemProps> = ({ generation }) => {
+    const rightText = React.useMemo(() => {
+        if (!generation.started_at) {
+            return "..."
+        }
+
+        const date = new Date(generation.started_at);
+
+        return `${formatUnit(date.getDay())}.${formatUnit(date.getMonth())} ${formatUnit(date.getMinutes())}:${formatUnit(date.getHours())}`;
+    }, [generation.started_at]);
+
     return (
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography sx={{ width: '33%', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                    {generation.description || generation.uid}
-                </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>I am an accordion</Typography>
+                <Stack direction="row" justifyContent="space-between" width="100%">
+                    <Typography sx={{ textOverflow: 'ellipsis', overflow: 'hidden', width: '60%' }}>
+                        {generation.description || generation.uid}
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary', textAlign: "right" }}>
+                        {rightText}
+                    </Typography>
+                </Stack>
+
             </AccordionSummary>
             <Link to={`/generation/${generation.uid}`}>
                 <AccordionDetails sx={{ cursor: "pointer" }}>
