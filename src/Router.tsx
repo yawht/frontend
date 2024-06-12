@@ -1,7 +1,8 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider, RouteObject } from 'react-router-dom';
 
-import { LandingPage, CreateGenerationPage, GenerationPage, TimelinePage } from './pages';
+import { LandingPage, CreateGenerationPage, TimelinePage } from './pages';
+import { BaseGenerationPage, GenerationPage } from './pages/CreateGenerationPage/CreateGenerationPage';
 
 const routes: RouteObject[] = [
     {
@@ -10,11 +11,16 @@ const routes: RouteObject[] = [
     },
     {
         path: '/generation',
-        element: <CreateGenerationPage />,
-    },
-    {
-        path: '/generation/:id',
-        element: <GenerationPage />,
+        element: <BaseGenerationPage />,
+        children: [
+            {
+                path: ':id',
+                element: <GenerationPage />,
+            }, {
+                path: '',
+                element: <CreateGenerationPage />
+            }
+        ],
     },
     {
         path: '/timeline',

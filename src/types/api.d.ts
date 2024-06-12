@@ -3,8 +3,8 @@ declare namespace API {
 
     interface GenerationResult {
         uid: string;
-        started_at: string;
-        finished_at: string;
+        started_at?: string;
+        finished_at?: string;
 
         error?: string;
         image_link?: string;
@@ -18,7 +18,9 @@ declare namespace API {
         metadata: Record<string, string>;
 
         input_image_link: string;
+        description: string;
         input_prompt: string | null;
+        negative_prompt: string | null;
 
         results: GenerationResult[];
     }
@@ -36,5 +38,7 @@ declare namespace POST {
     interface LaunchGeneration {
         input_image: string;
         input_prompt: string | null;
+        negative_prompt: string | null;
+        description: string;
     }
 }
