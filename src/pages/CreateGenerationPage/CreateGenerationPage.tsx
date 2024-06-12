@@ -118,12 +118,13 @@ export const GenerationPage: React.FC = () => {
     } = useGenerationPageContext();
     const uid = useParams<{ id: string }>().id || '';
 
-    const { data, isFetching } = useQuery({
+    const { data } = useQuery({
         queryKey: ['generation', uid],
         queryFn: () => api.fetch<API.Generation>(`/generations/${uid}`),
+        refetchInterval: (query) => !query.state.data || ['created', 'in_progress'].includes(query.state.data.status) ? 5000 : false,
     });
 
-    const results = isFetching || !data || data.results.length === 0 ? mockImages : data.results;
+    const results = !data || ['created', 'in_progress'].includes(data.status) ? mockImages : data.results;
     const previewSrc = src || data?.input_image_link;
 
     return <>
