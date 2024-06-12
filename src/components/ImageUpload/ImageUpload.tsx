@@ -1,7 +1,7 @@
 import React from "react";
 import { useDropzone } from 'react-dropzone';
 import { CloudUpload } from "@mui/icons-material";
-import { Box, Button, Skeleton, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import { ImagePreview } from "./ImagePreview";
 import { toBase64 } from "../../lib/file";
@@ -26,8 +26,7 @@ export const ImageUploadPreview: React.FC<ControlledImageUploadProps> = ({ src }
     return (
         <Box component="section" className="container">
             <div className="image-upload__dropzone" >
-                {src && <ImagePreview src={src} />}
-                {!src && <Skeleton variant="rectangular" width="100%" height="100%" />}
+                <ImagePreview src={src} />
             </div>
         </Box>
     );

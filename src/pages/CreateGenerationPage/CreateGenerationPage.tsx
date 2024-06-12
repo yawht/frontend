@@ -7,6 +7,7 @@ import { Page } from "../../components/Page/Page";
 import { ImageUpload, ImageUploadPreview } from "../../components/ImageUpload/ImageUpload";
 import { ApiError, api } from "../../api";
 import { useRenewedBoolean } from "../../lib/useRenewedBoolean";
+import { ImagePreview } from "../../components/ImageUpload/ImagePreview";
 
 interface StartButtonProps {
     pending?: boolean;
@@ -137,20 +138,8 @@ export const GenerationPage: React.FC = () => {
         <ImageList variant="masonry" cols={1} rowHeight='auto' gap={4} sx={{ width: "51.2rem" }}>
             {results.map((result) => (
                 <ImageListItem key={result.uid} >
-                    <Box sx={{ width: "51.2rem", height: "51.2rem", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        {!result.image_link && !result.error && (<>
-                            <Skeleton variant="rectangular" sx={{
-                                width: "100%", height: "100%", position: 'absolute'
-                            }} />
-                            <CircularProgress sx={{ position: 'absolute' }} />
-                        </>)}
-                        {result.image_link && (
-                            <img
-                                srcSet={`${result.image_link}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                src={`${result.image_link}?w=164&h=164&fit=crop&auto=format`}
-                                loading="lazy"
-                            />
-                        )}
+                    <Box sx={{ width: "51.2rem", height: "51.2rem" }}>
+                        {!result.error && (<ImagePreview src={result.image_link} spinner />)}
                         {result.error && (<>
                             <Skeleton variant="rectangular" animation={false} sx={{
                                 width: "100%", height: "100%", position: 'absolute', bgcolor: "rgba(225, 51, 51, 0.11)",
