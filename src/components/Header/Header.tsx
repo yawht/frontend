@@ -15,9 +15,7 @@ export const Header: React.FC = () => {
             flexWrap: 'nowrap'
         }}>
             <div className={styles.section}>
-                <HeaderItem link="/">
-                    {null}
-                </HeaderItem>
+                <HeaderItem link="/">YAHT</HeaderItem>
                 <HeaderItem link="/timeline">Запуски</HeaderItem>
                 <HeaderItem link="/generation">+</HeaderItem>
             </div>

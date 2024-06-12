@@ -22,7 +22,11 @@ export const StartButton: React.FC<StartButtonProps> = ({ pending, onClick }) =>
             sx={{ marginTop: '0.8rem' }}
             onClick={pending ? undefined : onClick}
             endIcon={pending ? <CircularProgress size={16} /> : undefined}
-        >Сгенерировать!</Button>
+        >
+            <Typography variant="button">
+                Сгенерировать!
+            </Typography>
+        </Button>
     );
 };
 

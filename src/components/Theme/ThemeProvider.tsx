@@ -2,6 +2,7 @@ import React from "react";
 import {
     ThemeProvider as MuiThemeProvider,
     PaletteOptions,
+    ThemeOptions,
     createTheme
 } from "@mui/material";
 
@@ -9,6 +10,32 @@ export type Theme = 'dark' | 'light';
 
 type Context = readonly [Theme, VoidFunction];
 export const ThemeContext = React.createContext<Context | null>(null);
+
+const k = 1.5;
+
+const typography: ThemeOptions['typography'] = {
+    h1: {
+        fontSize: 6 * k + 'rem',
+    },
+    h2: {
+        fontSize: 3.75 * k + 'rem',
+    },
+    h3: {
+        fontSize: 3 * k + 'rem',
+    },
+    subtitle1: {
+        fontSize: 1 * k + 'rem',
+    },
+    body1: {
+        fontSize: 1 * k + 'rem',
+    },
+    button: {
+        fontSize: 0.875 * k + 'rem',
+    },
+    caption: {
+        fontSize: 0.75 * k + 'rem',
+    },
+};
 
 const lightThemePalette: PaletteOptions = {
     mode: 'light',
@@ -29,6 +56,7 @@ const lightThemePalette: PaletteOptions = {
 
 const lightTheme = createTheme({
     palette: lightThemePalette,
+    typography,
 });
 
 const darkThemePalette: PaletteOptions = {
@@ -50,6 +78,7 @@ const darkThemePalette: PaletteOptions = {
 
 const darkTheme = createTheme({
     palette: darkThemePalette,
+    typography,
 });
 
 const THEME_LS_KEY = 'theme';

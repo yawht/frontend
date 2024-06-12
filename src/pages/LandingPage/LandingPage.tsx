@@ -13,7 +13,11 @@ export const LandingPage: React.FC = () => {
                     <Button
                         variant="contained"
                         sx={{ marginTop: '1.6rem' }}
-                    >Попробовать</Button>
+                    >
+                        <Typography variant="button">
+                            Попробовать
+                        </Typography>
+                    </Button>
                 </Link>
             </Stack>
         </Page>

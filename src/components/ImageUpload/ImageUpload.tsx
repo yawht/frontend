@@ -95,7 +95,9 @@ export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onSrcChang
                         tabIndex={-1}
                         startIcon={<CloudUpload />}
                     >
-                        Загрузите файл
+                        <Typography variant="button">
+                            Загрузите файл
+                        </Typography>
                     </Button>
                     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <Typography variant="caption" mt="0.8rem">

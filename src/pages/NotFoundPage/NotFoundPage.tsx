@@ -14,7 +14,11 @@ export const NotFoundPage: React.FC = () => {
                     <Button
                         variant="contained"
                         sx={{ marginTop: '3.2rem' }}
-                    >В начало</Button>
+                    >
+                        <Typography variant="button">
+                            В начало
+                        </Typography>
+                    </Button>
                 </Link>
             </Stack>
         </Page>
