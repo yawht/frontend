@@ -40,10 +40,15 @@ export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onSrcChang
         isDragActive,
         isFileDialogActive,
         isDragReject,
+        fileRejections,
     } = useDropzone({
         accept,
+        maxSize: 5 * 1024 * 1024,
         maxFiles: 1,
     });
+
+    const invalidTypeUploaded = fileRejections.some(file => file.errors.some(error => error.code === 'file-invalid-type'));
+    const heavyFileUploaded = fileRejections.some(file => file.errors.some(error => error.code === 'file-too-large'));
 
     const [src, setSrc] = React.useState<string>();
     const file: File | undefined = acceptedFiles[0];
@@ -70,7 +75,7 @@ export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onSrcChang
     }, [file, onSrcChange]);
 
     const classNames = ['image-upload__dropzone'];
-    if (isDragReject || showError) {
+    if (isDragReject || showError || heavyFileUploaded || invalidTypeUploaded) {
         classNames.push('image-upload__dropzone--reject');
     } else if (isDragActive || isFileDialogActive) {
         classNames.push('image-upload__dropzone--active');
@@ -103,8 +108,11 @@ export const ImageUpload: React.FC<UncontrolledImageUploadProps> = ({ onSrcChang
                         <Typography variant="caption" mt="0.8rem">
                             Или перетащите его в поле
                         </Typography>
-                        {isDragReject && <Typography variant="caption">
-                            Доступные форматы: {Object.values(accept).flatMap(id => id)}
+                        {(isDragReject || invalidTypeUploaded) && <Typography variant="caption">
+                            Доступные форматы: {Object.values(accept).flatMap(id => id).join(" ")}
+                        </Typography>}
+                        {heavyFileUploaded && <Typography variant="caption">
+                            Максимальный размер 5Mb
                         </Typography>}
                     </Box>
                 </Box>}
