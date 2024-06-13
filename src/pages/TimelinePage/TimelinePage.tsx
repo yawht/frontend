@@ -24,7 +24,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ generation }) => {
 
         const date = new Date(generation.started_at);
 
-        return `${formatUnit(date.getDay())}.${formatUnit(date.getMonth())} ${formatUnit(date.getMinutes())}:${formatUnit(date.getHours())}`;
+        return `${formatUnit(date.getDay())}.${formatUnit(date.getMonth())} ${date.getHours()}:${formatUnit(date.getMinutes())}`;
     }, [generation.started_at]);
 
     return (
