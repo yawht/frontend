@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "release": "pnpm build && cp ./dist/index.html ./dist/200.html && surge ./dist yaht.surge.sh",
+    "zip": "cd dist && zip -r ../release.zip ."
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
