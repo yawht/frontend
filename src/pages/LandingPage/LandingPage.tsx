@@ -9,10 +9,11 @@ export const LandingPage: React.FC = () => {
         <Page>
             <Stack direction="column" alignItems='center' >
                 <Typography variant="h1" mt="32.0rem">YAHT</Typography>
+                <Typography variant="h3" mt="0.8rem">Ваш контентый генератор</Typography>
                 <Link to="/generation">
                     <Button
                         variant="contained"
-                        sx={{ marginTop: '1.6rem' }}
+                        sx={{ marginTop: '2.0rem' }}
                     >
                         <Typography variant="button">
                             Попробовать
