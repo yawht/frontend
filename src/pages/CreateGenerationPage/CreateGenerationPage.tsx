@@ -35,9 +35,10 @@ interface OutlinedTextField {
     value?: string;
     onChange?: (value: string) => void;
     disabled?: boolean;
+    required?: boolean;
 }
 
-const OutlinedTextField: React.FC<OutlinedTextField> = ({ value, onChange: setValue, disabled, label }) => {
+const OutlinedTextField: React.FC<OutlinedTextField> = ({ value, onChange: setValue, disabled, label, required }) => {
     const onValueChange = React.useCallback<ChangeEventHandler<HTMLInputElement>>(event => setValue?.(event.target.value), [setValue]);
 
     return (
@@ -47,6 +48,7 @@ const OutlinedTextField: React.FC<OutlinedTextField> = ({ value, onChange: setVa
             value={value}
             onChange={onValueChange}
             disabled={disabled}
+            required={required}
             label={label}
             multiline
         />
@@ -102,7 +104,7 @@ export const CreateGenerationPage: React.FC = () => {
     return <>
         <ImageUpload onSrcChange={setSrc} showError={imageIncorrect} />
         <FormControl sx={{ marginTop: '1.6rem', width: '51.2rem' }} >
-            <OutlinedTextField label="Описание" onChange={setDescription} disabled={isPending} />
+            <OutlinedTextField label="Описание" onChange={setDescription} disabled={isPending} required />
             <OutlinedTextField label="Промпт" onChange={setPrompt} disabled={isPending} />
             <OutlinedTextField label="Отрицательный промпт" onChange={setNegativePrompt} disabled={isPending} />
         </FormControl>
