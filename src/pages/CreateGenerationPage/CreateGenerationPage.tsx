@@ -1,7 +1,8 @@
 import React, { ChangeEventHandler } from "react";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Box, Button, CircularProgress, FormControl, ImageList, ImageListItem, Skeleton, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl, ImageList, ImageListItem, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 
 import { Page } from "../../components/Page/Page";
 import { ImageUpload, ImageUploadPreview } from "../../components/ImageUpload/ImageUpload";
@@ -9,12 +10,12 @@ import { ApiError, api } from "../../api";
 import { useRenewedBoolean } from "../../lib/useRenewedBoolean";
 import { ImagePreview } from "../../components/ImageUpload/ImagePreview";
 
-interface StartButtonProps {
+interface ContainedButtonProps {
     pending?: boolean;
     onClick?: VoidFunction;
 }
 
-export const StartButton: React.FC<StartButtonProps> = ({ pending, onClick }) => {
+export const StartButton: React.FC<ContainedButtonProps> = ({ pending, onClick }) => {
     return (
         <Button
             variant="contained"
@@ -30,26 +31,41 @@ export const StartButton: React.FC<StartButtonProps> = ({ pending, onClick }) =>
     );
 };
 
+const AiPromptButton: React.FC<ContainedButtonProps> = ({ pending, onClick }) => {
+    return (
+        <Button
+            variant="outlined"
+            disabled={pending}
+            onClick={pending ? undefined : onClick}
+            sx={{ mt: "0.8rem", ml: "0.8rem" }}
+        >
+            {pending ? <CircularProgress size={16} /> : <SmartToyIcon fontSize="large" />}
+        </Button >
+    );
+};
+
 interface OutlinedTextField {
     label?: string;
     value?: string;
     onChange?: (value: string) => void;
     disabled?: boolean;
     required?: boolean;
+    error?: boolean;
 }
 
-const OutlinedTextField: React.FC<OutlinedTextField> = ({ value, onChange: setValue, disabled, label, required }) => {
+const OutlinedTextField: React.FC<OutlinedTextField> = ({ value, onChange: setValue, disabled, label, required, error }) => {
     const onValueChange = React.useCallback<ChangeEventHandler<HTMLInputElement>>(event => setValue?.(event.target.value), [setValue]);
 
     return (
         <TextField
-            sx={{ mt: "0.8rem" }}
+            sx={{ mt: "0.8rem", flexGrow: 1 }}
             variant="outlined"
             value={value}
             onChange={onValueChange}
             disabled={disabled}
             required={required}
             label={label}
+            error={error}
             multiline
         />
     );
@@ -67,6 +83,7 @@ export const CreateGenerationPage: React.FC = () => {
         setNegativePrompt
     } = useGenerationPageContext();
     const [imageIncorrect, setImageIncorrect] = useRenewedBoolean(2000);
+    const [descriptionIncorrect, setDescriptionIncorrect] = useRenewedBoolean(2000);
 
     const { mutateAsync, isPending } = useMutation<
         API.Generation,
@@ -82,11 +99,27 @@ export const CreateGenerationPage: React.FC = () => {
         }
     });
 
+    const { mutateAsync: generatePromptMutation, isPending: isGeneratingPrompt } = useMutation<API.GeneratePrompt, ApiError, POST.GeneratePrompt>({
+        mutationKey: ['generatePrompt'],
+        mutationFn: (body) => {
+            return api.fetch('/prompt', {
+                method: 'POST',
+                body,
+            })
+        },
+    });
+
     const navigate = useNavigate();
 
     const startGeneration = React.useCallback(() => {
         if (!src) {
             setImageIncorrect();
+        }
+        if (!description) {
+            setDescriptionIncorrect();
+        }
+
+        if (!src || !description) {
             return;
         }
 
@@ -95,18 +128,31 @@ export const CreateGenerationPage: React.FC = () => {
             description: description,
             input_prompt: prompt === '' ? null : prompt,
             negative_prompt: negativePrompt === '' ? null : negativePrompt,
-
         })
             .then(({ uid }) => navigate(`/generation/${uid}`))
             .catch(console.error);
-    }, [mutateAsync, navigate, prompt, setImageIncorrect, description, negativePrompt, src]);
+    }, [mutateAsync, navigate, prompt, setImageIncorrect, setDescriptionIncorrect, description, negativePrompt, src]);
+
+    const generatePrompt = React.useCallback(() => {
+        if (!description) {
+            setDescriptionIncorrect();
+            return;
+        }
+
+        generatePromptMutation({ description })
+            .then(({ prompt }) => setPrompt(prompt))
+            .catch(console.error);
+
+    }, [description, setDescriptionIncorrect, generatePromptMutation, setPrompt]); 
 
     return <>
         <ImageUpload onSrcChange={setSrc} showError={imageIncorrect} />
-        <FormControl sx={{ marginTop: '1.6rem', width: '51.2rem' }} >
-            <OutlinedTextField label="Описание" onChange={setDescription} disabled={isPending} required />
-            <OutlinedTextField label="Промпт" onChange={setPrompt} disabled={isPending} />
-            <OutlinedTextField label="Отрицательный промпт" onChange={setNegativePrompt} disabled={isPending} />
+        <FormControl sx={{ marginTop: '1.6rem', width: '51.2rem' }}>
+            <OutlinedTextField label="Описание" value={description} onChange={setDescription} disabled={isPending || isGeneratingPrompt} error={descriptionIncorrect} required />
+            <Stack direction="row">
+                <OutlinedTextField label="Промпт" value={prompt} onChange={setPrompt} disabled={isPending || isGeneratingPrompt} /><AiPromptButton onClick={generatePrompt} pending={isGeneratingPrompt} />
+            </Stack>
+            <OutlinedTextField label="Отрицательный промпт" value={negativePrompt} onChange={setNegativePrompt} disabled={isPending} />
         </FormControl>
         <StartButton pending={isPending} onClick={startGeneration} />
     </>;

@@ -32,6 +32,10 @@ declare namespace API {
             type: string;
         }>
     }
+
+    interface GeneratePrompt {
+        prompt: string;
+    }
 }
 
 declare namespace POST {
@@ -39,6 +43,10 @@ declare namespace POST {
         input_image: string;
         input_prompt: string | null;
         negative_prompt: string | null;
+        description: string;
+    }
+
+    interface GeneratePrompt {
         description: string;
     }
 }
